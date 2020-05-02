@@ -35,7 +35,7 @@
 
 \begin{document}
     \maketitle
-    \begin{lstlisting}[language=C, caption=Iterative bubble sort in C]
+    \begin{lstlisting}[language=C, caption=C code of iterative bubble sort, label=lst:iter_C]
 void bubble_sort_iter(int arr[], int n) {
   int temp;
   // 1st for loop
@@ -50,7 +50,7 @@ void bubble_sort_iter(int arr[], int n) {
   return;
 }
     \end{lstlisting}
-    \begin{lstlisting}[language=C, caption=Iterative bubble sort in RV32I]
+    \begin{lstlisting}[language=C, caption=RV32I code of iterative bubble sort, label=lst:iter_RV32I]
 00010074 <bubble_sort_iter>:
 // allocate 12 words in stack
 10074:	fd010113	addi	sp,sp,-48
@@ -137,7 +137,35 @@ void bubble_sort_iter(int arr[], int n) {
 // return back to the caller function
 10174:	00008067	ret
     \end{lstlisting}
-    \begin{lstlisting}[language=C, caption=Recursive bubble sort in C]
+    \begin{lstlisting}[caption=instructions stat of iterative bubble sort, label=lst:iter_stat]
+Instructions Stat:
+LUI	= 3
+JAL	= 291
+JALR	= 3
+BEQ	= 99
+BLT	= 5697
+BGE	= 4851
+LW	= 78413
+SB	= 288
+SW	= 13534
+ADDI	= 21551
+ANDI	= 378
+SLLI	= 19505
+ADD	= 19505
+SUB	= 4949
+LI*	= 652
+
+Five Most Frequent:
+1) LW	= 78413 (46.38%)
+2) ADDI	= 21551 (12.75%)
+3) SLLI	= 19505 (11.54%)
+4) ADD	= 19505 (11.54%)
+5) SW	= 13534 (8.01%)
+
+Memory Reading Area 10074...20073
+Memory Writing Area 112c0...40002000
+    \end{lstlisting}
+    \begin{lstlisting}[language=C, caption=C code of recursive bubble sort, label=lst:recur_C]
 void bubble_sort_recur(int arr[], int n) {
   if (n == 1) return;
   int temp;
@@ -151,7 +179,7 @@ void bubble_sort_recur(int arr[], int n) {
   return;
 }
     \end{lstlisting}
-    \begin{lstlisting}[language=C, caption=Recursive bubble sort in RV32I]
+    \begin{lstlisting}[language=C, caption=RV32I code of recursive bubble sort, label=lst:recur_RV32I]
 00010074 <bubble_sort_recur>:
 // allocate 12 words in stack
 10074:	fd010113	addi	sp,sp,-48
@@ -239,6 +267,33 @@ void bubble_sort_recur(int arr[], int n) {
 // return back to the caller function
 10178:	00008067	ret
     \end{lstlisting}
+    \begin{lstlisting}[caption=instructions stat of recursive bubble sort, label=lst:recur_stat]
+Instructions Stat:
+LUI	= 3
+JAL	= 486
+JALR	= 101
+BEQ	= 198
+BLT	= 5598
+BGE	= 4851
+LW	= 73660
+SB	= 288
+SW	= 13828
+ADDI	= 22041
+ANDI	= 378
+SLLI	= 19505
+ADD	= 19505
+LI*	= 849
+
+Five Most Frequent:
+1) LW	= 73660 (45.91%)
+2) ADDI	= 22041 (13.74%)
+3) SLLI	= 19505 (12.16%)
+4) ADD	= 19505 (12.16%)
+5) SW	= 13828 (8.62%)
+
+Memory Reading Area 10074...20073
+Memory Writing Area 112c4...40002000
+    \end{lstlisting}
     \begin{enumerate}
         \item How are argumnets of \verb|bubble_sort_iter()| and \verb|bubble_sort_recur()| maintained in the stack?
 
@@ -278,7 +333,27 @@ void bubble_sort_recur(int arr[], int n) {
         \verb|ret|의 정의는 \verb|jalr x0, 0(x1)|이다.
         즉, jump instruction 기준 \verb|pc + 4| 값을 \verb|x0|에 dump하고 return address로 jump한다.
         \item Shortly explain how \verb|emu-r32i.c| implements the RISC-V CPU emulation (i.e., how it emulates many different RISC-V instructions without running on a real RISC-V CPU). Your answer should be less than 40 words.
+
+        Emulator는 호스트 내에 메모리 공간을 잡아 가상의 programmer visible state(pc, registers, memory)를 만든다.
+        CPU는 finite state machine이므로 각 instruction의 수행 결과가 지정된 ISA에 맞게 programmer visible state에 반영되면 가상의 CPU를 실제 CPU와 동일하게 취급할 수 있다.
         \item Compare the instructions counts between \verb|bubble_iter| and \verb|bubble_recur|. What's the notable differences between these two?
+
+        Five most frequent instructions는 iterative bubble sort와 recursive bubble sort가 크게 다르지 않다.
+        둘 다 LW, ADDI, SLLI, ADD, SW 순으로 많이 수행하였으며 그 비율 또한 \SIrange{45}{46}{\percent}, \SIrange{12}{13}{\percent}, \SIrange{11}{12}{\percent}, \SIrange{11}{12}{\percent}, \SI{8}{\percent}로 크게 다르지 않다.
+        가장 큰 차이점이라면 recursive bubble sort가 iterative bubble sort에 비해 JAL, JALR, BEQ를 더 많이 수행하였다는 점이다.
+        또한 iterative bubble sort는 SUB를 4949번 수행하였는데 recursive bubble sort는 SUB를 단 한 번도 수행하지 않았다.
         \item Why do you think the differences in Q6 is observed? Relate your answer with the differences between iteration and recursion.
+
+        먼저 iterative만 SUB를 수행한 이유는 iterative에만 \verb|n - i|(Listing \ref{lst:iter_C}의 6 line)가 있기 때문이다.
+        실제로 iterative C 코드에서 SUB로 컴파일되는 코드는 \verb|n - i| 뿐이다.
+        recursive가 BEQ를 더 많이 수행한 이유는 recursive C 코드에만 \verb|if (n == 1)|(Listing \ref{lst:recur_C}의 2 line)이 있기 때문이다.
+
+        iterative와 recursive의 알고리즘 차이가 가장 많이 드러난 부분이 JAL과 JALR이다.
+        iterative는 한 번 전체를 bubbling하고 다음 스텝으로 넘어갈 때 \verb|i|를 increment하고 1st for loop의 condition statement로 넘어간다.
+        이 과정에서 jump는 없다.
+        Listing \ref{lst:iter_RV32I}의 \numrange{69}{77} line에 해당한다.
+        반면에 recusive는 한 번 전체를 bubbling한 후 다음 스텝으로 넘어갈 때 recursive call을 한다.
+        Listing \ref{lst:recur_RV32I}의 \numrange{69}{74} line에 해당한다.
+        \verb|10074 <bubble_sort_recur>|로 넘어갈 때 한 번 JAL을 수행하고 \verb|ret|로 다시 돌아올 때 한 번 JALR을 수행하므로 iterative보다 JAL과 JALR의 수행 횟수가 앞설 수 밖에 없다.
     \end{enumerate}
 \end{document}

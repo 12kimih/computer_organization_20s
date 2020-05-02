@@ -26,6 +26,7 @@
 #define STRICT_RV32I
 #define FALSE (0)
 #define TRUE (-1)
+#define DEBUG_EXTRA
 
 #ifdef DEBUG_EXTRA
 
