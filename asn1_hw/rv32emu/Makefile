@@ -1,4 +1,4 @@
-BINS = emu-rv32i first
+BINS = emu-rv32i first bubble_recur bubble_iter atoi
 
 CROSS_COMPILE = riscv-none-embed-
 RV32I_CFLAGS = -march=rv32i -mabi=ilp32 -O0 -nostdlib
@@ -25,6 +25,10 @@ atoi: atoi.c
 
 check: $(BINS)
 	./emu-rv32i first
+	./emu-rv32i bubble_recur
+	./emu-rv32i bubble_iter
+	./emu-rv32i atoi
 
 clean:
-	$(RM) $(BINS) bubble_recur bubble_iter
+	$(RM) $(BINS)
+
