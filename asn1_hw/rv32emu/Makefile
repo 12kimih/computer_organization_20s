@@ -20,6 +20,9 @@ bubble_recur: bubble_recur.c
 bubble_iter: bubble_iter.c
 	$(CROSS_COMPILE)gcc $(RV32I_CFLAGS) -o $@ $<
 
+atoi: atoi.c
+	$(CROSS_COMPILE)gcc $(RV32I_CFLAGS) -o $@ $<
+
 check: $(BINS)
 	./emu-rv32i first
 
