@@ -29,7 +29,7 @@ class SingleCycleCPU(implicit val conf: CPUConfig) extends Module {
 
   val instruction = io.imem.instruction
 
-  pc := Mux(branchCtrl.io.taken || control.io.jump(1), Mux(~control.io.jump(0), branchAdd.io.result, alu.io.result), pcPlusFour.io.result)
+  pc := Mux(branchCtrl.io.taken || control.io.jump(1), Mux(~control.io.jump(0), branchAdd.io.result, Cat(alu.io.result(31, 1), 0.U)), pcPlusFour.io.result)
 
   pcPlusFour.io.inputx := pc
   pcPlusFour.io.inputy := 4.U

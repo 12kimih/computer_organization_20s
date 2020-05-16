@@ -25,12 +25,22 @@ class BranchControl extends Module {
     val taken  = Output(Bool())
   })
   io.taken := DontCare
-  switch(funct3) {
-    is("b000".U) {io.taken := (io.inputx === io.inputy)}
-    is("b001".U) {io.taken := (io.inputx != io.inputy)}
-    is("b100".U) {io.taken := (io.inputx.asSInt < io.inputy.asSInt)}
-    is("b101".U) {io.taken := (io.inputx.asSInt >= io.inputy.asSInt)}
-    is("b110".U) {io.taken := (io.inputx < io.inputy)}
-    is("b111".U) {io.taken := (io.inputx >= io.inputy)}
+  when(io.branch) {
+    switch(io.funct3) {
+      // BEQ
+      is("b000".U) {io.taken := (io.inputx === io.inputy)}
+      // BNE
+      is("b001".U) {io.taken := (io.inputx != io.inputy)}
+      // BLT
+      is("b100".U) {io.taken := (io.inputx.asSInt < io.inputy.asSInt)}
+      // BGE
+      is("b101".U) {io.taken := (io.inputx.asSInt >= io.inputy.asSInt)}
+      // BLTU
+      is("b110".U) {io.taken := (io.inputx < io.inputy)}
+      // BGEU
+      is("b111".U) {io.taken := (io.inputx >= io.inputy)}
+    }
+  } .otherwise {
+    io.taken := false.B
   }
 }
