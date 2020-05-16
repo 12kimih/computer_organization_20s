@@ -31,4 +31,3 @@ check: $(BINS)
 
 clean:
 	$(RM) $(BINS)
-

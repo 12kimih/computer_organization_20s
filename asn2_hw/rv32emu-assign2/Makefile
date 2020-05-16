@@ -48,4 +48,3 @@ check: $(BINS)
 
 clean:
 	$(RM) $(BINS) *.o *.s
-
