@@ -46,7 +46,7 @@ class HazardUnit extends Module {
   io.ifid_flush   := false.B
 
   // Load to use hazard.
-  when(((io.rs1 != 0.U && io.rs1 === io.idex_rd) || (io.rs2 != 0.U && io.rs2 === io.idex_rd)) && io.idex_memread) {
+  when(io.idex_memread && ((io.rs1 === io.idex_rd && io.idex_rd =/= 0.U) || (io.rs2 === io.idex_rd && io.idex_rd =/= 0.U))) {
     io.pcwrite := 2.U
     io.ifid_bubble := true.B
     io.idex_bubble := true.B
