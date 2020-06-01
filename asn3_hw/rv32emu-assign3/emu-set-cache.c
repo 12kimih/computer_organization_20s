@@ -125,4 +125,3 @@ void cache_write(uint32_t addr, uint32_t value)
   cache[idx + lru].counter = 0;
   return;
 }
-
