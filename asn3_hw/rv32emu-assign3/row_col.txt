@@ -1,0 +1,36 @@
+./emu-rv32i-dir-cache ./mat-col2
+>>> cache hit ratio: 0.9832 (hit:1459, miss:25)
+./emu-rv32i-set-cache ./mat-col2
+>>> cache hit ratio: 0.9832 (hit:1459, miss:25)
+./emu-rv32i-dir-cache ./mat-row2
+>>> cache hit ratio: 0.9832 (hit:1459, miss:25)
+./emu-rv32i-set-cache ./mat-row2
+>>> cache hit ratio: 0.9832 (hit:1459, miss:25)
+
+./emu-rv32i-dir-cache ./mat-col4
+>>> cache hit ratio: 0.9835 (hit:7502, miss:126)
+./emu-rv32i-set-cache ./mat-col4
+>>> cache hit ratio: 0.9920 (hit:7567, miss:61)
+./emu-rv32i-dir-cache ./mat-row4
+>>> cache hit ratio: 0.9835 (hit:7502, miss:126)
+./emu-rv32i-set-cache ./mat-row4
+>>> cache hit ratio: 0.9919 (hit:7566, miss:62)
+
+./emu-rv32i-dir-cache ./mat-col8
+>>> cache hit ratio: 0.9839 (hit:45469, miss:743)
+./emu-rv32i-set-cache ./mat-col8
+>>> cache hit ratio: 0.9795 (hit:45266, miss:946)
+./emu-rv32i-dir-cache ./mat-row8
+>>> cache hit ratio: 0.9848 (hit:45508, miss:704)
+./emu-rv32i-set-cache ./mat-row8
+>>> cache hit ratio: 0.9819 (hit:45376, miss:836)
+
+./emu-rv32i-dir-cache ./mat-col16
+>>> cache hit ratio: 0.9666 (hit:283861, miss:9813)
+./emu-rv32i-set-cache ./mat-col16
+>>> cache hit ratio: 0.9686 (hit:284441, miss:9233)
+./emu-rv32i-dir-cache ./mat-row16
+>>> cache hit ratio: 0.9774 (hit:287049, miss:6625)
+./emu-rv32i-set-cache ./mat-row16
+>>> cache hit ratio: 0.9802 (hit:287865, miss:5809)
+
